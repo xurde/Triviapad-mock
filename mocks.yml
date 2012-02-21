@@ -1,0 +1,70 @@
+-
+  name: "Menganito"
+  botjid: "menganito"
+  botpasswd: '123456'
+  roomid: "quickie"
+  ratio: 0.3
+  delay: 0.5
+-
+  name: "Fulanito"
+  botjid: "fulanito"
+  botpasswd: '123456'
+  roomid: "quickie"
+  ratio: 0.2
+  delay: 0.5
+-
+  name: "MrKnowItAll"
+  botjid: "MrKnowItAll"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.5
+  delay: 0.5
+-
+  name: "CrashTestDummy"
+  botjid: "CrashTestDummy"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.05
+  delay: 0.9
+-
+  name: "Hal9000"
+  botjid: "Hal9000"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.4
+  delay: 0.6
+-
+  name: "C3PO"
+  botjid: "C3PO"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.3
+  delay: 1.4
+-
+  name: "R2D2"
+  botjid: "R2D2"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.5
+  delay: 1.8
+-
+  name: "Robocop"
+  botjid: "Robocop"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.2
+  delay: 0.6
+-
+  name: "Wall-e"
+  botjid: "wall-e"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.4
+  delay: 0.5
+-
+  name: "Rachael"
+  botjid: "rachael"
+  botpasswd: '123456'
+  roomid: "trivianerds"
+  ratio: 0.3
+  delay: 0.5
