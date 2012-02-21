@@ -37,5 +37,6 @@ end
 
 loop {
   sleep(1)
-  puts "Sleeping..."
+  puts "[[MOCKS STATUS]]"
+  @mocks.each{|m| puts "#{m.botjid} (#{m.status})"}
 }
