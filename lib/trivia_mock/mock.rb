@@ -118,7 +118,7 @@ module TriviaMock
     
     def play
       loop {
-        @logger.log "Preparing bot to join game...", :info, "THREAD #{@nickname} - play"
+        @logger.log "Preparing to join game...", :info, "THREAD #{@nickname} - play"
         join_game
         begin #keep playing responding questions
           @status = :playing
@@ -177,7 +177,7 @@ module TriviaMock
         msg.id = Time.now.usec.to_s
         msg.add_element 'x', {'xmlns' => 'service/game'}
         
-        @logger.log "Preparing Join stanza -> #{msg.display}", :presence, "THREAD #{@nickname} - join game"
+        @logger.log "Preparing Join stanza -> #{msg.inspect}", :presence, "THREAD #{@nickname} - join game"
         sleep(3)
         @jclient.send(msg)
         @logger.log "Join stanza Sent", :presence, "THREAD #{@nickname} - join game"
@@ -202,7 +202,7 @@ module TriviaMock
         end until random_id != ok_id
         
         delay = (rand(10000) * @delay).to_i + 1000
-        sleep(delay/1000)  
+        sleep(delay/1000)
         
         answ = Jabber::Message.new(quest.from)
         answ.type = :answer

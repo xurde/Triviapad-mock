@@ -4,9 +4,15 @@ require 'rubygems'
 require 'lib/trivia_mock/mock'
 
 MOCKS_NUM = 100
-PAUSE = 0.2
+PAUSE = 0
 
 @mocks = []
+
+def show_status
+  puts "[[MOCKS STATUS]]"
+  puts "Mocks Running: #{@mocks.size}"
+  puts "By status: playing: #{@mocks.select{|i| i.status == :playing }.size} - gameover: #{@mocks.select{|i| i.status == :gameover }.size}}"  
+end
 
 
 for i in 1..MOCKS_NUM
@@ -29,14 +35,14 @@ for i in 1..MOCKS_NUM
     puts "EXCEPTION IN MAIN THREAD - #{e.message}"
   end
   @mocks << new_mock
-  puts "[[MOCKS STATUS]]"
-  @mocks.each{|m| puts "#{m.botjid} (#{m.status})"}
+  show_status
   sleep(PAUSE)
   puts "[[MAIN]] :: MOCK LAUNCH :: Creating mock id #{new_mock.botjid}"
 end
 
+
+
 loop {
   sleep(1)
-  puts "[[MOCKS STATUS]]"
-  @mocks.each{|m| puts "#{m.botjid} (#{m.status})"}
+  show_status
 }
