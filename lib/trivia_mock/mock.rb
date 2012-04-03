@@ -1,13 +1,19 @@
+LIB_PATH = "#{File.dirname(__FILE__)}/../"
+
+puts "LIB_PATH -> #{LIB_PATH}"
+
 require 'xmpp4r'
 require 'xmpp4r/muc'
 require 'xmpp4r/roster'
 require 'xmpp4r/client'
 
+require "#{LIB_PATH}jabber_extend"
+require "#{LIB_PATH}logger"
+
+
 include Jabber
 #Jabber::debug = true
 
-require 'lib/jabber_extend'
-require 'lib/logger'
 
 HOST = 'dev.triviapad.com'
 MUCHOST = "rooms.dev.triviapad.com"
@@ -31,7 +37,7 @@ module TriviaMock
       @roomjid = "bot-#{@roomid}@#{HOST}"
       
       @logger = EventLogger.new
-      @logger.enabled = false
+      @logger.enabled = true
       
       @jclient = Client.new(@botjid)
       @logger.log "Connecting to server as #{@botjid}", :info, "THREAD #{@nickname}"
@@ -127,7 +133,7 @@ module TriviaMock
         end until @status == :gameover
         @logger.log "Game on room #{@roomjid} is over. Waiting to play again...", :info, "THREAD #{@nickname} - play"
         #Pause between games
-        sleep (25)
+        sleep (45)
       }
       
     end
@@ -147,20 +153,20 @@ module TriviaMock
     
     
     def muc_message_callback(msg)
-      @logger.log "#{msg.from.nickname} [#{msg.type.to_s}]> #{msg.body}", :info
+      @logger.log "#{msg.from} [#{msg.type.to_s}]> #{msg.body}", :info
     rescue Exception => e
       @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc message callback"
     end
     
     
     def muc_join_callback(msg)
-      @logger.log "#{msg.from.nickname} joins the room", :info
+      @logger.log "#{msg.from} joins the room", :info
     rescue Exception => e
       @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc join callback"
     end
     
     def muc_leave_callback(msg)
-      @logger.log "#{msg.from.nickname} has left the room", :info
+      @logger.log "#{msg.from} has left the room", :info
     rescue Exception => e
       @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc leave callback"
     end
