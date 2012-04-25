@@ -13,9 +13,9 @@ include Jabber
 #Jabber::debug = true
 
 
-MOCKS_HOST = 'dev-guest.triviapad.com'
-MUCHOST = "rooms.dev.triviapad.com"
-BOTHOST = "dev.triviapad.com"
+MOCKS_HOST = 'guest.triviapad.com'
+MUCHOST = "rooms.raw.triviapad.com"
+BOTHOST = "raw.triviapad.com"
 
 module TriviaMock
   
