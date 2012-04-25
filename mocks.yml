@@ -1,36 +1,36 @@
 -
   id: "guest-24041900"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.2
   delay: 1
 -
   id: "guest-24041910"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.18
   delay: 0.8
 -
   id: "guest-24041920"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.15
   delay: 0.8
 -
   id: "guest-24041930"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.115
   delay: 0.9
 -
   id: "guest-24041940"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.17
   delay: 0.9
 -
   id: "guest-24041950"
   botpasswd: '123456'
-  roomid: "quickie"
+  roomid: "triviarace"
   ratio: 0.10
   delay: 0.9
