@@ -1,7 +1,5 @@
 LIB_PATH = "#{File.dirname(__FILE__)}/../"
 
-puts "LIB_PATH -> #{LIB_PATH}"
-
 require 'xmpp4r'
 require 'xmpp4r/muc'
 require 'xmpp4r/roster'
@@ -15,8 +13,9 @@ include Jabber
 #Jabber::debug = true
 
 
-HOST = 'dev.triviapad.com'
+MOCKS_HOST = 'dev-guest.triviapad.com'
 MUCHOST = "rooms.dev.triviapad.com"
+BOTHOST = "dev.triviapad.com"
 
 module TriviaMock
   
@@ -27,29 +26,29 @@ module TriviaMock
     def initialize(config = nil)
       
       #Global Instance variables
-      @nickname = config["name"]
-      @botid = config["botjid"]
-      @botjid = JID::new("#{@botid}@#{HOST}")
+      #@nickname = config["nickname"]
+      @botid = config["id"]
+      @botjid = JID::new("#{@botid}@#{MOCKS_HOST}")
       @botpasswd = config["botpasswd"]
       @roomid = config["roomid"]
+      @roomjid = "bot-#{@roomid}@#{BOTHOST}"
       @ratio = config["ratio"].to_f
       @delay = config["delay"].to_f
-      @roomjid = "bot-#{@roomid}@#{HOST}"
       
       @logger = EventLogger.new
       @logger.enabled = true
       
       @jclient = Client.new(@botjid)
-      @logger.log "Connecting to server as #{@botjid}", :info, "THREAD #{@nickname}"
+      @logger.log "Connecting to server as #{@botjid}", :info, "THREAD #{@botid}"
     	@jclient.connect
     	@jclient.auth(@botpasswd)
-    	@logger.log "Authenticated!", :info, "THREAD #{@nickname}"
+    	@logger.log "Authenticated!", :info, "THREAD #{@botid}"
     	@status = :connected
     	
       @jclient.send(Presence.new.set_type(:available))
       
       #Fetch rooms
-      @logger.log "Fetching rooms...", :info, "THREAD #{@nickname}"
+      @logger.log "Fetching rooms...", :info, "THREAD #{@botid}"
       @mucb = MUC::MUCBrowser.new(@jclient)
       rooms = @mucb.muc_rooms(MUCHOST).to_a
       
@@ -68,13 +67,13 @@ module TriviaMock
       begin #join room and set callbacks
         @muc = MUC::MUCClient.new(@jclient)
         joinroomjid = "#{@roomid}@#{MUCHOST}/#{@botid}"
-        @logger.log "Joining Room at #{joinroomjid}...", :info, "THREAD #{@nickname} - initialize"
+        @logger.log "Joining Room at #{joinroomjid}...", :info, "THREAD #{@botid} - initialize"
         @muc.join(JID::new(joinroomjid))
-        send_chat('Hi everyone')
+        #send_chat('Hi everyone')
         
         # MUC Callbacks
         @muc.add_message_callback do |msg|
-          muc_message_callback(msg)
+          #muc_message_callback(msg)
         end
               
         @muc.add_join_callback do |msg|
@@ -85,21 +84,21 @@ module TriviaMock
           muc_leave_callback(msg)
         end
         
-      rescue
-        @logger.log "Exception while joining #{@roomjid}", :error, "THREAD #{@nickname} - initialize"
+      rescue Exception => e
+        @logger.log "Exception while joining #{@roomjid}  --  #{e.message}  --  #{e.backtrace}", :error, "THREAD #{@botid} - initialize"
       else
-        @logger.log "Joined #{@roomjid} room successfully!", :info, "THREAD #{@nickname} - initialize"
+        @logger.log "Joined #{@roomjid} room successfully!", :info, "THREAD #{@botid} - initialize"
       end
       
       
       @jclient.add_message_callback do |msg|
-        @logger.log "#{msg.from}", :message, "THREAD #{@nickname} - Message Callback"
+        @logger.log "#{msg.from}", :message, "THREAD #{@botid} - Message Callback"
         case msg.type
           when :question
-            @logger.log "Invocando al azar Quechua... #{msg.inspect}", :question, "THREAD #{@nickname}"
+            @logger.log "Invocando al azar Quechua... #{msg.inspect}", :question, "THREAD #{@botid}"
             process_question_answer(msg)
           when :ranking
-            @logger.log "Processing ranking... #{msg.inspect}", :ranking, "THREAD #{@nickname}"
+            @logger.log "Processing ranking... #{msg.inspect}", :ranking, "THREAD #{@botid}"
             process_ranking(msg)
           when :chat
             @logger.log "#{msg.from}> ", "Priv Message [#{msg.type}]"
@@ -112,10 +111,10 @@ module TriviaMock
           case pres.type
           when :join
             @status = :joined
-            @logger.log "#{pres.inspect}", :presence, "THREAD #{@nickname} - Presence Callback"
+            @logger.log "#{pres.inspect}", :presence, "THREAD #{@botid} - Presence Callback"
           end
         rescue Exception => e
-          @logger.log "Exception #{e.message} - #{e.backtrace}", :presence, "THREAD #{@nickname} - Presence Callback"
+          @logger.log "Exception #{e.message} - #{e.backtrace}", :presence, "THREAD #{@botid} - Presence Callback"
         end
       end
       
@@ -124,14 +123,14 @@ module TriviaMock
     
     def play
       loop {
-        @logger.log "Preparing to join game...", :info, "THREAD #{@nickname} - play"
+        @logger.log "Preparing to join game...", :info, "THREAD #{@botid} - play"
         join_game
         begin #keep playing responding questions
           @status = :playing
           sleep(1)
-          #@logger.log "On game loop", :info, "THREAD #{@nickname} - play"
+          #@logger.log "On game loop", :info, "THREAD #{@botid} - play"
         end until @status == :gameover
-        @logger.log "Game on room #{@roomjid} is over. Waiting to play again...", :info, "THREAD #{@nickname} - play"
+        @logger.log "Game on room #{@roomjid} is over. Waiting to play again...", :info, "THREAD #{@botid} - play"
         #Pause between games
         sleep (45)
       }
@@ -155,20 +154,20 @@ module TriviaMock
     def muc_message_callback(msg)
       @logger.log "#{msg.from} [#{msg.type.to_s}]> #{msg.body}", :info
     rescue Exception => e
-      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc message callback"
+      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@botid} - muc message callback"
     end
     
     
     def muc_join_callback(msg)
       @logger.log "#{msg.from} joins the room", :info
     rescue Exception => e
-      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc join callback"
+      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@botid} - muc join callback"
     end
     
     def muc_leave_callback(msg)
       @logger.log "#{msg.from} has left the room", :info
     rescue Exception => e
-      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@nickname} - muc leave callback"
+      @logger.log "Exception! - #{e.message}", :error, "THREAD #{@botid} - muc leave callback"
     end
     
     
@@ -183,21 +182,21 @@ module TriviaMock
         msg.id = Time.now.usec.to_s
         msg.add_element 'x', {'xmlns' => 'service/game'}
         
-        @logger.log "Preparing Join stanza -> #{msg.inspect}", :presence, "THREAD #{@nickname} - join game"
+        @logger.log "Preparing Join stanza -> #{msg.inspect}", :presence, "THREAD #{@botid} - join game"
         sleep(3)
         @jclient.send(msg)
-        @logger.log "Join stanza Sent", :presence, "THREAD #{@nickname} - join game"
+        @logger.log "Join stanza Sent", :presence, "THREAD #{@botid} - join game"
         @status = :awaiting
         cont = 0
         begin
           sleep(1)
           cont += 1
-          @logger.log "Waiting for join response from #{@roomjid}... (status:#{@status} - cont:#{cont})", :info, "THREAD #{@nickname} - join game"
+          @logger.log "Waiting for join response from #{@roomjid}... (status:#{@status} - cont:#{cont})", :info, "THREAD #{@botid} - join game"
         end until (@status == :joined || cont >= 10)
       rescue Exception => e
-        @logger.log "Exception while joining game at #{@roomjid} - #{e.message} - #{e.backtrace}", :error, "THREAD #{@nickname} - join game"
+        @logger.log "Exception while joining game at #{@roomjid} - #{e.message} - #{e.backtrace}", :error, "THREAD #{@botid} - join game"
       else
-        @logger.log "Joined game request at #{@roomjid} successfully sent", :info, "THREAD #{@nickname} - join game"
+        @logger.log "Joined game request at #{@roomjid} successfully sent", :info, "THREAD #{@botid} - join game"
       end
       
       
@@ -224,7 +223,7 @@ module TriviaMock
         @jclient.send(answ)
         @logger.log "Sending Answer response --> #{answ.inspect}", :game
       rescue Exception => e
-        @logger.log "Exception while processing answer: #{e.message} ->> #{e.backtrace}", :error, "THREAD #{@nickname} - process_question_answer"
+        @logger.log "Exception while processing answer: #{e.message} ->> #{e.backtrace}", :error, "THREAD #{@botid} - process_question_answer"
       end
       
       
@@ -235,12 +234,12 @@ module TriviaMock
         
         if type == 'game' && (count == total)
           @status = :gameover
-          @logger.log "End of game detected", :game, "THREAD @{nickname} - process ranking"
+          @logger.log "End of game detected", :game, "THREAD @{botid} - process ranking"
         end
         
         
       rescue Exception => e
-        @logger.log "Exception while processing answer: #{e.message} ->> #{e.backtrace}", :error, "THREAD #{@nickname} - process_question_answer"
+        @logger.log "Exception while processing answer: #{e.message} ->> #{e.backtrace}", :error, "THREAD #{@botid} - process_question_answer"
       end
       
       

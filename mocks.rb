@@ -1,17 +1,18 @@
 #!/usr/bin/ruby
+MOCK_PATH = "#{File.dirname(__FILE__)}/" 
 
 require 'rubygems'
 require 'yaml'
-require 'lib/trivia_mock/mock'
+require "#{MOCK_PATH}lib/trivia_mock/mock"
 
-MOCKS_PATH = 'mocks.yml'
+MOCKS_FILE = 'mocks.yml'
 
-@mocklist = File.open( MOCKS_PATH ) { |yml| YAML::load(yml) }
+@mocklist = File.open(MOCKS_FILE) {|yml| YAML::load(yml)}
 
 @mocks = []
 
 @mocklist.each{ |mock|
-    puts "[[MAIN]] :: MOCK LAUNCH :: Creating mock id #{mock.id}"
+    puts "[[MAIN]] :: MOCK LAUNCH :: Creating mock id #{mock['name']}"
     new_mock = TriviaMock::Player.new(mock)
     begin
       @thread = Thread.new(new_mock.name){new_mock.play}

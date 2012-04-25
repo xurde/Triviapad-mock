@@ -1,70 +1,36 @@
 -
-  name: "Menganito"
-  botjid: "menganito"
-  botpasswd: '123456'
-  roomid: "quickie"
-  ratio: 0.3
-  delay: 0.5
--
-  name: "Fulanito"
-  botjid: "fulanito"
+  id: "guest-24041900"
   botpasswd: '123456'
   roomid: "quickie"
   ratio: 0.2
-  delay: 0.5
+  delay: 1
 -
-  name: "MrKnowItAll"
-  botjid: "MrKnowItAll"
+  id: "guest-24041910"
   botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.5
-  delay: 0.5
+  roomid: "quickie"
+  ratio: 0.18
+  delay: 0.8
 -
-  name: "CrashTestDummy"
-  botjid: "CrashTestDummy"
+  id: "guest-24041920"
   botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.05
+  roomid: "quickie"
+  ratio: 0.15
+  delay: 0.8
+-
+  id: "guest-24041930"
+  botpasswd: '123456'
+  roomid: "quickie"
+  ratio: 0.115
   delay: 0.9
 -
-  name: "Hal9000"
-  botjid: "Hal9000"
+  id: "guest-24041940"
   botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.4
-  delay: 0.6
+  roomid: "quickie"
+  ratio: 0.17
+  delay: 0.9
 -
-  name: "C3PO"
-  botjid: "C3PO"
+  id: "guest-24041950"
   botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.3
-  delay: 1.4
--
-  name: "R2D2"
-  botjid: "R2D2"
-  botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.5
-  delay: 1.8
--
-  name: "Robocop"
-  botjid: "Robocop"
-  botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.2
-  delay: 0.6
--
-  name: "Wall-e"
-  botjid: "wall-e"
-  botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.4
-  delay: 0.5
--
-  name: "Rachael"
-  botjid: "rachael"
-  botpasswd: '123456'
-  roomid: "trivianerds"
-  ratio: 0.3
-  delay: 0.5
+  roomid: "quickie"
+  ratio: 0.10
+  delay: 0.9

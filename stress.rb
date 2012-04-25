@@ -4,7 +4,7 @@ require 'rubygems'
 MOCK_PATH = "#{File.dirname(__FILE__)}/"
 require "#{MOCK_PATH}lib/trivia_mock/mock"
 
-MOCKS_NUM = 20
+MOCKS_NUM = 10
 PAUSE = 1
 
 @mocks = []
@@ -23,8 +23,8 @@ for i in 1..MOCKS_NUM
   mock['name'] = "Mock #{i}"
   mock['botjid'] = "mock-#{i}"
   mock['botpasswd'] = "123456"
-  mock['roomid'] = "dev-room"
-  #mock['roomid'] = "trivianerds"
+  #mock['roomid'] = "dev-room"
+  mock['roomid'] = "quickie"
   mock['ratio'] = 0.5
   mock['delay'] = 0.5
   
